@@ -31,7 +31,7 @@ class ImageResizer(object):
         self.image_format = None
         self.image = None
 
-        self.skip_extensions = IMAGE_EXTENSIONS_TO_SKIP
+        self.skip_extensions = IMAGE_EXTENSIONS_TO_SKIP[:]
 
         if isinstance(skip_extensions, list):
             self.skip_extensions += skip_extensions
