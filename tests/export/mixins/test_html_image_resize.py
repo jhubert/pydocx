@@ -5,14 +5,11 @@ from __future__ import (
     unicode_literals,
 )
 
-from pydocx.export.html import PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter
+from pydocx.export.html import PyDocXHTMLExporterWithImageResize
 from unittest import TestCase
 import os
 from pydocx.test import utils
-
-
-class PyDocXHTMLExporterWithImageResize(PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter):
-    pass
+from pydocx import PyDocX
 
 
 def get_fixture(img_name, as_binary=False):
@@ -35,10 +32,18 @@ def get_fixture(img_name, as_binary=False):
 class PyDocXHTMLExporterWithImageResizeTestCase(TestCase):
     exporter = PyDocXHTMLExporterWithImageResize
 
-    def test_export_docx_to_html_image_resize(self):
+    def test_export_docx_to_html_image_resize_using_mixin(self):
         docx_file_path = get_fixture('png_basic_resize_linked_photo.docx')
         html_file_content = get_fixture('png_basic_resize_linked_photo.html', as_binary=True)
 
         html = self.exporter(docx_file_path).parsed
+
+        utils.assert_html_equal(html, html_file_content)
+
+    def test_export_docx_to_html_using_helper(self):
+        docx_file_path = get_fixture('png_basic_resize_linked_photo.docx')
+        html_file_content = get_fixture('png_basic_resize_linked_photo.html', as_binary=True)
+
+        html = PyDocX.to_html(docx_file_path, image_resize=True)
 
         utils.assert_html_equal(html, html_file_content)

@@ -15,6 +15,7 @@ from pydocx.constants import (
     TWIPS_PER_POINT,
 )
 from pydocx.export.base import PyDocXExporter
+from pydocx.export.mixins import PyDocXHTMLExporterImageResizeMixin
 
 from pydocx.util.xml import (
     convert_dictionary_to_html_attributes,
@@ -407,3 +408,7 @@ class PyDocXHTMLExporter(PyDocXExporter):
 
     def break_tag(self):
         return '<br />'
+
+
+class PyDocXHTMLExporterWithImageResize(PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter):
+    pass
