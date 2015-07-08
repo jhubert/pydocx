@@ -51,30 +51,23 @@ class GetImageDataAndFileNameTestCase(TestCase):
 
 
 class ImageResizerTestCase(TestCase):
-    def test_init(self):
-        image_data = get_img('image1.png', as_binary=True)
-
-        ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px')
-
-        self.assertTrue(ir)
-
     def test_init_object(self):
         image_data = get_img('image1.png', as_binary=True)
         ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px')
 
         self.assertTrue(ir)
 
-    def test_has_skipable_extension_tue(self):
+    def test_has_skipable_extension_true(self):
         image_data = get_img('image1.png', as_binary=True)
         ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px', skip_extensions=['png'])
 
-        self.assertTrue(ir.has_skipable_extension())
+        self.assertTrue(ir.has_skippable_extension())
 
     def test_has_skipable_extension_false(self):
         image_data = get_img('image1.png', as_binary=True)
         ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px')
 
-        self.assertFalse(ir.has_skipable_extension())
+        self.assertFalse(ir.has_skippable_extension())
 
     def test_has_height_and_width_true(self):
         image_data = get_img('image1.png', as_binary=True)
@@ -119,14 +112,14 @@ class ImageResizerTestCase(TestCase):
 
         result = ir.resize_image()
 
-        self.assertIsNone(result)
+        self.assertFalse(result)
 
     def test_resize_image_success(self):
         image_data = get_img('image1.png', as_binary=True)
 
         ir = ImageResizer(image_data, 'image1.png', '48 px', '48 px')
-
         ir.init_image()
+
         result = ir.resize_image()
 
         self.assertTrue(result)

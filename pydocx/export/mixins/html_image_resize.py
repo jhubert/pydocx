@@ -20,7 +20,7 @@ class PyDocXHTMLExporterImageResizeMixin(object):
 
         image_resizer = ImageResizer(image_data, filename, x, y)
 
-        if image_resizer.has_skipable_extension():
+        if image_resizer.has_skippable_extension():
             return ''
 
         if not image_resizer.has_height_and_width():

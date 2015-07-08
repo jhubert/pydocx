@@ -36,7 +36,7 @@ class ImageResizer(object):
         if isinstance(skip_extensions, list):
             self.skip_extensions += skip_extensions
 
-    def has_skipable_extension(self):
+    def has_skippable_extension(self):
         if not self.filename:
             return False
         lower_src = self.filename.lower()
@@ -66,13 +66,13 @@ class ImageResizer(object):
             raise e
 
     def resize_image(self):
+        resized = False
+
         # Let's not resize a base64 encoded image.
         if uri.is_encoded_image_uri(self.image_data):
-            return
+            return resized
         if not self.image:
-            return
-
-        _resized = False
+            return resized
 
         image_format = self.image.format
         self.image_format = image_format
@@ -87,7 +87,7 @@ class ImageResizer(object):
         if (current_area < new_area) and (expected_sizes != self.image.size):
             try:
                 self.image = self.image.resize(expected_sizes, Image.ANTIALIAS)
-                _resized = True
+                resized = True
             except (IOError, SystemError):
                 # Image can't be resized, such is life.
                 pass
@@ -104,7 +104,7 @@ class ImageResizer(object):
 
         self.image_format = image_format
 
-        return _resized
+        return resized
 
     def update_filename(self):
         if not self.image_format:
