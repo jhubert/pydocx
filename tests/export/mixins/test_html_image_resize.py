@@ -6,7 +6,7 @@ from __future__ import (
 )
 
 from pydocx.export.html import PyDocXHTMLExporter
-from pydocx.export.mixins.html_image_resize import PyDocXHTMLExporterImageResizeMixin
+from pydocx.export.mixins import PyDocXHTMLExporterImageResizeMixin
 
 from unittest import TestCase
 import os
