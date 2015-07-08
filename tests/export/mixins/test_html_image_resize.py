@@ -5,7 +5,9 @@ from __future__ import (
     unicode_literals,
 )
 
-from pydocx.export.html import PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter
+from pydocx.export.html import PyDocXHTMLExporter
+from pydocx.export.mixins.html_image_resize import PyDocXHTMLExporterImageResizeMixin
+
 from unittest import TestCase
 import os
 from pydocx.test import utils
