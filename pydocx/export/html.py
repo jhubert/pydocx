@@ -408,7 +408,3 @@ class PyDocXHTMLExporter(PyDocXExporter):
 
     def break_tag(self):
         return '<br />'
-
-
-class PyDocXHTMLExporterWithImageResize(PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter):
-    pass

@@ -5,10 +5,14 @@ from __future__ import (
     unicode_literals,
 )
 
-from pydocx.export.html import PyDocXHTMLExporterWithImageResize
+from pydocx.export.html import PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter
 from unittest import TestCase
 import os
 from pydocx.test import utils
+
+
+class PyDocXHTMLExporterWithImageResize(PyDocXHTMLExporterImageResizeMixin, PyDocXHTMLExporter):
+    pass
 
 
 def get_fixture(img_name, as_binary=False):
