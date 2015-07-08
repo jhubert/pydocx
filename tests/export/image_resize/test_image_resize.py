@@ -166,3 +166,15 @@ class ImageResizerTestCase(TestCase):
         ir.update_filename()
 
         self.assertEqual(ir.filename, 'image1.png')
+
+    def test_update_filename_to_gif(self):
+        image_data = get_img('image2.tif', as_binary=True)
+
+        ir = ImageResizer(image_data, 'image2.tif', '48 px', '48 px')
+
+        ir.init_image()
+        ir.resize_image()
+
+        ir.update_filename()
+
+        self.assertEqual(ir.filename, 'image2.gif')
