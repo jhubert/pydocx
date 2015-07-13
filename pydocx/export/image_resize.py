@@ -75,6 +75,7 @@ class ImageResizer(object):
             return resized
 
         image_format = self.image.format
+
         self.image_format = image_format
         expected_sizes = (self.x, self.y)
 

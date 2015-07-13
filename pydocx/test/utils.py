@@ -346,3 +346,23 @@ class XMLDocx2Html(PyDocXHTMLExporter):
             return self.numbering_dict[num_id][ilvl]
         except KeyError:
             return 'decimal'
+
+
+def get_img_fixture(img_name, as_binary=False):
+    """Get image from fixture"""
+
+    file_path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        '..',
+        '..',
+        'tests',
+        'fixtures',
+        'images',
+        img_name,
+    )
+
+    if as_binary:
+        with open(file_path, 'rb') as f:
+            return f.read()
+    else:
+        return file_path

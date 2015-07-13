@@ -7,3 +7,7 @@ from __future__ import (
 
 class MalformedDocxException(Exception):
     pass
+
+
+class ImageUploadException(Exception):
+    pass
