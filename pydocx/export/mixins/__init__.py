@@ -6,7 +6,12 @@ from pydocx.export.mixins.resized_images import (
     ResizedImagesExportMixin,
 )
 
+from pydocx.export.mixins.upload_images import (
+    S3ImagesUploadMixin,
+)
+
 __all__ = [
     'FakedSuperscriptAndSubscriptExportMixin',
-    'ResizedImagesExportMixin'
+    'ResizedImagesExportMixin',
+    'S3ImagesUploadMixin'
 ]
