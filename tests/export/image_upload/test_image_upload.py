@@ -14,14 +14,14 @@ from pydocx.exceptions import ImageUploadException
 
 class S3ImageUploaderTestCase(TestCase):
     def test_input_as_json(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
 
         s3 = S3ImageUploader(signed_request)
 
         self.assertIsInstance(s3.signed_data, dict)
 
     def test_input_as_dict(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
         signed_request = json.loads(signed_request)
 
         s3 = S3ImageUploader(signed_request)
@@ -29,7 +29,7 @@ class S3ImageUploaderTestCase(TestCase):
         self.assertIsInstance(s3.signed_data, dict)
 
     def test_image_extension_from_filename(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
 
         s3 = S3ImageUploader(signed_request)
 
@@ -38,7 +38,7 @@ class S3ImageUploaderTestCase(TestCase):
         self.assertEqual('png', image_format)
 
     def test_upload_image(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
         signed_request = json.loads(signed_request)
 
         s3 = S3ImageUploader(signed_request)
@@ -50,7 +50,7 @@ class S3ImageUploaderTestCase(TestCase):
         self.assertEqual('http://pydocx.s3.amazonaws.com/uploads/pydocx/image2.png', result)
 
     def test_upload_image_invalid_url(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
         signed_request = json.loads(signed_request)
 
         signed_request['url'] = 'http://invalid_bucket.s3.amazonaws.com/'
@@ -62,7 +62,7 @@ class S3ImageUploaderTestCase(TestCase):
         self.assertRaises(ImageUploadException, s3.upload, img_data, 'image2.png', 'png')
 
     def test_upload_image_invalid_signed_request(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
         signed_request = json.loads(signed_request)
 
         signed_request['AWSAccessKeyId'] += 'test'
@@ -74,7 +74,7 @@ class S3ImageUploaderTestCase(TestCase):
         self.assertRaises(ImageUploadException, s3.upload, img_data, 'image3.png', 'png')
 
     def test_upload_image_as_data(self):
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
         signed_request = json.loads(signed_request)
 
         s3 = S3ImageUploader(signed_request)

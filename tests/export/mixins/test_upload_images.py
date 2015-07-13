@@ -33,7 +33,7 @@ class PyDocXHTMLExporterS3ImageUploadTestCase(TestCase):
     def test_export_docx_to_html_with_image_upload_to_s3(self):
         docx_file_path = get_img_fixture('png_basic_resize_linked_photo.docx')
 
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
 
         html_file_content = get_img_fixture(
             'png_basic_s3_upload.html',
@@ -52,7 +52,7 @@ class PyDocXHTMLExporterImageResizeS3ImageUploadTestCase(TestCase):
     def test_export_docx_resize_upload_to_s3(self):
         docx_file_path = get_img_fixture('png_basic_resize_linked_photo.docx')
 
-        signed_request = get_img_fixture('upload_singed_request.json', as_binary=True)
+        signed_request = get_img_fixture('upload_signed_request.json', as_binary=True)
 
         html_file_content = get_img_fixture(
             'png_basic_resize_and_s3_upload.html',
