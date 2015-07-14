@@ -12,6 +12,7 @@ from collections import namedtuple
 import os
 
 import requests
+from xml.etree import ElementTree
 
 from pydocx.exceptions import ImageUploadException
 from pydocx.util import uri
@@ -30,6 +31,7 @@ class S3ImageUploader(ImageUploader):
         self.signed_data = signed_data
 
         self.OK_STATUS = 204
+        self.S3_ERROR_STATUS = 403
 
     def _s3_url(self, bucket_name):
         return 'https://%s.s3.amazonaws.com/' % bucket_name
@@ -91,7 +93,12 @@ class S3ImageUploader(ImageUploader):
 
         r = requests.post(s3_obj.url, data=data, files={'file': (filename, img_data)})
 
-        if r.status_code != self.OK_STATUS:
-            raise ImageUploadException("S3: image upload error: %s" % r)
+        if r.status_code == self.S3_ERROR_STATUS:
+            error = ElementTree.fromstring(r.content)
+            code = error.find("Code").text
+            message = error.find("Message").text
+            raise ImageUploadException("S3 {0} - {1}".format(code, message))
+        elif r.status_code != self.OK_STATUS:
+            raise ImageUploadException("S3 Upload Error: {0}".format(r.text))
 
         return s3_obj.img_url
