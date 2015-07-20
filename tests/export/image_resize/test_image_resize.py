@@ -12,8 +12,10 @@ from pydocx.export.image_resize import (
     get_image_from_src,
     ImageResizer,
 )
+from pydocx.test.utils import mock_image_request
 from PIL import Image
 from StringIO import StringIO
+import responses
 
 
 def get_img(img_name, as_binary=False):
@@ -33,6 +35,8 @@ def get_img(img_name, as_binary=False):
 
 class GetImageFromSrcTestCase(TestCase):
     def test_get_image_from_src_url(self):
+        mock_image_request('http://httpbin.org/image/png', fixture = 'images/image1.png')
+
         web_data = get_image_from_src('http://httpbin.org/image/png')
         local_data = get_img('image1.png', as_binary=True)
 
@@ -47,6 +51,8 @@ class GetImageFromSrcTestCase(TestCase):
 
 class GetImageDataAndFileNameTestCase(TestCase):
     def test_get_image_from_src_url(self):
+        mock_image_request('http://httpbin.org/image/png', fixture = 'images/image1.png')
+
         uri = 'http://httpbin.org/image/png'
         img_data, filename = get_image_data_and_filename(uri, 'png.png')
 

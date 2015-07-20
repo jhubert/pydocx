@@ -22,6 +22,7 @@ from pydocx.openxml.packaging import (
 )
 
 from pydocx.test.document_builder import DocxBuilder as DXB
+import responses
 
 
 def prettify(xml_string):
@@ -346,3 +347,34 @@ class XMLDocx2Html(PyDocXHTMLExporter):
             return self.numbering_dict[num_id][ilvl]
         except KeyError:
             return 'decimal'
+
+def get_fixture(fixture_name, as_binary=False):
+    """Get fixture as path or binary data"""
+
+    file_path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        '..',
+        '..',
+        'tests',
+        'fixtures',
+        fixture_name,
+    )
+
+    if as_binary:
+        with open(file_path, 'rb') as f:
+            return f.read()
+    else:
+        return file_path
+
+def mock_image_request(url, fixture=None, content_type='image/png'):
+    """Helper to mock requests for test images"""
+
+    if fixture:
+        body = get_fixture(fixture, as_binary=True)
+
+    def request_callback(request):
+        """Get the request that we make and compose the image url"""
+        return status, {}, body
+
+    responses.add_callback(responses.GET, url, content_type=content_type,
+        callback=request_callback)
