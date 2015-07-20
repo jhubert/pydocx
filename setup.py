@@ -51,7 +51,7 @@ def main():
         },
         scripts=[],
         zip_safe=False,
-        install_requires=['requests', 'PIL'],
+        install_requires=['requests', 'Pillow'],
         cmdclass={},
         classifiers=[
             "Development Status :: 3 - Alpha",
