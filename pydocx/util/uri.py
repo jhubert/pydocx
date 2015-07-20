@@ -1,6 +1,11 @@
 import re
 import os
-from urlparse import unquote
+# Support Python 2 and 3
+try:
+    from urllib.parse import unquote
+except ImportError:
+    from urlparse import unquote
+
 
 IMAGE_DATA_URI_REGEX = re.compile(
     r'data:image/(?P<extension>\w+);base64,(?P<image_data>.+)',

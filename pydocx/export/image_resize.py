@@ -8,7 +8,11 @@ from __future__ import (
 
 import base64
 from StringIO import StringIO
-from urlparse import urlparse
+# Support Python 2 and 3
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 import posixpath
 
 import requests
