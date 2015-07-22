@@ -5,10 +5,11 @@ from __future__ import (
     unicode_literals,
 )
 
-from pydocx.export.html import PyDocXHTMLExporter
-from pydocx.export.mixins import ResizedImagesExportMixin
 from unittest import TestCase
 import os
+
+from pydocx.export.html import PyDocXHTMLExporter
+from pydocx.export.mixins import ResizedImagesExportMixin
 from pydocx.test import utils
 
 
@@ -31,7 +32,12 @@ def get_fixture(img_name, as_binary=False):
 
     if as_binary:
         with open(file_path, 'rb') as f:
-            return f.read()
+            data = f.read()
+
+            if img_name.endswith('.html'):
+                data = data.decode()
+
+            return data
 
     return file_path
 

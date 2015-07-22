@@ -7,7 +7,7 @@ from __future__ import (
 )
 
 import base64
-from StringIO import StringIO
+
 # Support Python 2 and 3
 try:
     from urllib.parse import urlparse
@@ -16,10 +16,9 @@ except ImportError:
 import posixpath
 
 import requests
-
 from requests.exceptions import InvalidSchema
+from pydocx.util import uri, get_stream_cls
 
-from pydocx.util import uri
 from PIL import Image
 
 IMAGE_EXTENSIONS_TO_SKIP = ['emf', 'wmf', 'svg']
@@ -64,7 +63,7 @@ class ImageResizer(object):
         if match:
             image_data = base64.b64decode(match.group('image_data'))
         try:
-            self.image = Image.open(StringIO(image_data))
+            self.image = Image.open(get_stream_cls(image_data)(image_data))
         except (IOError, SystemError) as e:
             # PIL can't open it, return the image_data as is.
             raise e
@@ -98,7 +97,9 @@ class ImageResizer(object):
         if image_format in IMAGE_FORMATS_TO_GIF_COMPRESS:
             # Convert to gif.
             image_format = 'GIF'
-        output = StringIO()
+
+        output = get_stream_cls(self.image_data)()
+
         try:
             self.image.save(output, image_format)
             self.image_data = output.getvalue()

@@ -7,13 +7,14 @@ from __future__ import (
 
 import os
 from unittest import TestCase
+
 from pydocx.export.image_resize import (
     get_image_data_and_filename,
     get_image_from_src,
     ImageResizer,
 )
 from PIL import Image
-from StringIO import StringIO
+from pydocx.util import get_stream_cls
 
 
 def get_img(img_name, as_binary=False):
@@ -28,7 +29,12 @@ def get_img(img_name, as_binary=False):
 
     if as_binary:
         with open(file_path, 'rb') as f:
-            return f.read()
+            data = f.read()
+
+            if img_name.endswith('.data'):
+                data = data.decode()
+
+            return data
 
 
 class GetImageFromSrcTestCase(TestCase):
@@ -101,14 +107,17 @@ class ImageResizerTestCase(TestCase):
         image_data = get_img('image1.png', as_binary=True)
         ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px')
         ir.init_image()
-        self.assertEqual(ir.image, Image.open(StringIO(image_data)))
+
+        self.assertEqual(ir.image, Image.open(get_stream_cls(image_data)(image_data)))
 
     def test_init_image_with_data_should_be_the_same(self):
         image_data = get_img('image1.data', as_binary=True)
+        png_data = get_img('image1.png', as_binary=True)
+
         ir = ImageResizer(image_data, 'image1.png', '100 px', '100 px')
         ir.init_image()
 
-        png_image = Image.open(StringIO(get_img('image1.png', as_binary=True)))
+        png_image = Image.open(get_stream_cls(png_data)(png_data))
         self.assertEqual(ir.image, png_image)
 
     def test_init_image_exception(self):
@@ -163,7 +172,8 @@ class ImageResizerTestCase(TestCase):
 
         self.assertEqual(ir.image_format, 'GIF')
 
-        image = Image.open(StringIO(image_data)).resize(
+        input = get_stream_cls(image_data)(image_data)
+        image = Image.open(input).resize(
             (50, 50),
             Image.ANTIALIAS
         )
