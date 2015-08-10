@@ -15,6 +15,10 @@ from pydocx.export.image_resize import (
 class ResizedImagesExportMixin(object):
     def image(self, image_data, filename, x, y, uri_is_external):
 
+        if not image_data:
+            # TODO find out why image_data is empty
+            return ''
+
         if uri_is_external:
             image_data, filename = get_image_data_and_filename(
                 image_data,
