@@ -787,6 +787,7 @@ class PyDocXExporter(MultiMemoizeMixin):
         return 0, 0
 
     def parse_image(self, context):
+
         x, y = self._get_image_size(context.element)
         relationship_id = self._get_image_id(context.element)
         try:
@@ -794,13 +795,20 @@ class PyDocXExporter(MultiMemoizeMixin):
                 relationship_id=relationship_id,
             )
             is_uri_external = uri_is_external(image_part.uri)
+
             if is_uri_external:
                 data = image_part.uri
             else:
                 data = image_part.stream.read()
+                # We can have cases when relationship_id is the same for multiple images and
+                # in this case image_part object is the same for all images. A call to stream.read()
+                # moves the cursor to the end and when we try to read() multiple times it gives us
+                # empty value. So, we just move the cursor back to the beginning
+                image_part.stream.seek(0)
         except KeyError:
             return ''
         _, filename = posixpath.split(image_part.uri)
+
         return self.image(
             data,
             filename,
