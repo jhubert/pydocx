@@ -38,6 +38,7 @@ class ConvertDocxToHtmlTestCase(DocXFixtureTestCaseFactory):
         'missing_numbering',
         'missing_style',
         'nested_lists',
+        'nested_multitype_lists',
         'nested_table_rowspan',
         'nested_tables',
         'no_break_hyphen',
